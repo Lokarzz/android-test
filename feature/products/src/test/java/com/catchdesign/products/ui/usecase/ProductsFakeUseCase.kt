@@ -1,4 +1,4 @@
-package com.catchdesign.products.ui.repository
+package com.catchdesign.products.ui.usecase
 
 import com.catchdesign.domain.model.APIError
 import com.catchdesign.domain.model.APIState
@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 
-internal class ProductsFakeRepository : ProductsUseCase {
+internal class ProductsFakeUseCase : ProductsUseCase {
     override suspend fun invoke(): Flow<APIState<ProductsUI>> {
         return flow {
             emit(
@@ -24,7 +24,7 @@ internal class ProductsFakeRepository : ProductsUseCase {
     }
 }
 
-internal class ProductsFakeRepositoryError : ProductsUseCase {
+internal class ProductsFakeUseCaseError : ProductsUseCase {
     override suspend fun invoke(): Flow<APIState<ProductsUI>> {
         return flow {
             emit(

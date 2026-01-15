@@ -1,8 +1,8 @@
 package com.catchdesign.products.ui
 
 import com.catchdesign.domain.model.APIState
-import com.catchdesign.products.ui.repository.ProductsFakeRepository
-import com.catchdesign.products.ui.repository.ProductsFakeRepositoryError
+import com.catchdesign.products.ui.usecase.ProductsFakeUseCase
+import com.catchdesign.products.ui.usecase.ProductsFakeUseCaseError
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +17,7 @@ import org.junit.Test
 
 class ProductsViewModelTest {
     private lateinit var viewModel: ProductsViewModel
-    private val productsUseCase = ProductsFakeRepository()
+    private val productsUseCase = ProductsFakeUseCase()
 
     val testDispatcher = StandardTestDispatcher()
 
@@ -38,14 +38,14 @@ class ProductsViewModelTest {
     }
 
     @Test
-    fun `getUiState initial value is empty`() = runTest {
+    fun `uiState initial value is correct`() = runTest {
         val state = viewModel.uiState.value
         assertEquals(false, state.isRefreshing)
         assertTrue(state.projectsAPIState is APIState.Idle)
     }
 
     @Test
-    fun `handleAction OnRefresh updates isRefreshing then fetches products successfully`() =
+    fun `handleAction OnRefresh and fetchProducts successfully`() =
         runTest {
             viewModel.handleAction(ProductsAction.OnRefresh)
 
@@ -57,9 +57,9 @@ class ProductsViewModelTest {
         }
 
     @Test
-    fun `fetchProducts handles error correctly`() = runTest {
+    fun `handleAction OnRefresh and fetchProducts error`() = runTest {
         val viewModel = ProductsViewModel(
-            productsUseCase = ProductsFakeRepositoryError(),
+            productsUseCase = ProductsFakeUseCaseError(),
             coroutineDispatcher = testDispatcher
         )
         assertTrue(viewModel.uiState.value.projectsAPIState is APIState.Idle)

@@ -7,3 +7,6 @@ android {
 
 }
 
+dependencies {
+    implementation(projects.core.domain)
+}
