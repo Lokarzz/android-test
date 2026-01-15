@@ -46,3 +46,4 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 android-library = { id = "com.android.library", version.ref = "agp" }
 
 catchdesign-convention-android-application = { id = "com.catchdesign.convention.android.application" }
+catchdesign-convention-android-feature = { id = "com.catchdesign.convention.android.feature" }

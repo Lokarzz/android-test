@@ -38,6 +38,9 @@ gradlePlugin {
             implementationClass = "com.catchdesign.convention.AndroidProjectConventionPlugin"
         }
 
-
+        create("androidFeature") {
+            id = libs.plugins.catchdesign.convention.android.feature.get().pluginId
+            implementationClass = "com.catchdesign.convention.AndroidFeatureConventionPlugin"
+        }
     }
 }
