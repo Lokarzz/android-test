@@ -1,14 +1,12 @@
 plugins {
     alias(libs.plugins.catchdesign.convention.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
 }
 
 android {
     namespace = "com.catchdesign.androidtest"
 
     defaultConfig {
-        applicationId = "com.lokarz.piranhatank"
+        applicationId = "com.catchdesign.androidtest"
         versionCode = 1
         versionName = "1.0"
 
@@ -33,4 +31,5 @@ android {
 }
 
 dependencies {
+
 }

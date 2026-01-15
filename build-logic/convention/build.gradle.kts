@@ -42,5 +42,10 @@ gradlePlugin {
             id = libs.plugins.catchdesign.convention.android.feature.get().pluginId
             implementationClass = "com.catchdesign.convention.AndroidFeatureConventionPlugin"
         }
+
+        create("androidDomain") {
+            id = libs.plugins.catchdesign.convention.android.domain.get().pluginId
+            implementationClass = "com.catchdesign.convention.AndroidDomainConventionPlugin"
+        }
     }
 }

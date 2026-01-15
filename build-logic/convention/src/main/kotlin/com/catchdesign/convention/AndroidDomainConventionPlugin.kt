@@ -7,7 +7,6 @@ import com.catchdesign.convention.extensions.androidTestImplementation
 import com.catchdesign.convention.extensions.applyCompileOptions
 import com.catchdesign.convention.extensions.applyDefaultConfiguration
 import com.catchdesign.convention.extensions.applyKotlinJvmCompilerOptions
-import com.catchdesign.convention.extensions.debugImplementation
 import com.catchdesign.convention.extensions.implementation
 import com.catchdesign.convention.extensions.kotlinOptions
 import com.catchdesign.convention.extensions.libraryExtension
@@ -19,7 +18,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.gradle.kotlin.dsl.dependencies
 
-class AndroidFeatureConventionPlugin : Plugin<Project> {
+class AndroidDomainConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
             val libs = libs()
@@ -45,34 +44,17 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
     private fun Project.applyPlugins(libs: LibrariesForLibs) {
         alias(libs.plugins.android.library)
         alias(libs.plugins.kotlin.android)
-        alias(libs.plugins.kotlin.compose)
     }
 
     private fun DependencyHandlerScope.applyDependencies(libs: LibrariesForLibs) {
         implementation(libs.androidx.core.ktx)
-        implementation(libs.androidx.activity.compose)
-        implementation(platform(libs.androidx.compose.bom))
-        implementation(libs.androidx.compose.ui)
-        implementation(libs.androidx.compose.ui.graphics)
-        implementation(libs.androidx.compose.ui.tooling.preview)
-        implementation(libs.androidx.compose.material3)
+        implementation(libs.androidx.appcompat)
+        implementation(libs.material)
         implementation(libs.kotlinx.coroutines.android)
-
-        implementation(libs.androidx.lifecycle.runtime.ktx)
-        implementation(libs.androidx.lifecycle.viewmodel.compose)
-        implementation(libs.androidx.lifecycle.viewmodel.ktx)
-
-
-        androidTestImplementation(platform(libs.androidx.compose.bom))
-        androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-        debugImplementation(libs.androidx.compose.ui.tooling)
-        debugImplementation(libs.androidx.compose.ui.test.manifest)
-
         testImplementation(libs.junit)
         androidTestImplementation(libs.androidx.junit)
         androidTestImplementation(libs.androidx.espresso.core)
     }
-
     private fun Project.android(block: LibraryExtension.() -> Unit) {
         libraryExtension().apply(block)
     }
