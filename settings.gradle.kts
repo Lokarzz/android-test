@@ -24,3 +24,5 @@ rootProject.name = "AndroidTest"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 include(":app")
+include(":feature:products")
+include(":feature:productdetails")

@@ -16,6 +16,7 @@ compileSdk = "36"
 targetSdk = "36"
 androidGradlePlugin = "9.0.0-alpha14"
 kotlinGradlePlugin = "2.2.0"
+jetbrainsKotlinJvm = "2.0.21"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
