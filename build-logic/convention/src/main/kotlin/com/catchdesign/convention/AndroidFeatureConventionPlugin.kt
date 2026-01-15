@@ -71,6 +71,8 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         testImplementation(libs.junit)
         androidTestImplementation(libs.androidx.junit)
         androidTestImplementation(libs.androidx.espresso.core)
+        testImplementation(libs.kotlinx.coroutines.test)
+
     }
 
     private fun Project.android(block: LibraryExtension.() -> Unit) {
