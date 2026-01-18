@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
-class ProductsViewModel(
+internal class ProductsViewModel(
     private val productsUseCase: ProductsUseCase,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
@@ -36,6 +36,7 @@ class ProductsViewModel(
 
     private fun fetchProducts() {
         viewModelScope.launch(coroutineDispatcher) {
+
             productsUseCase().collect { apiState ->
                 _uiState.update {
                     it.copy(
@@ -48,6 +49,7 @@ class ProductsViewModel(
                         }
                     )
                 }
+
             }
         }
     }

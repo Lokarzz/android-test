@@ -2,7 +2,6 @@ package com.catchdesign.productdetails.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,16 +23,38 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 import com.catchdesign.domain.model.APIState
 import com.catchdesign.domain.model.productdetails.ProductDetailsUI
 import com.catchdesign.domain.usecase.productdetails.ProductDetailsUseCase
+import com.catchdesign.domain.usecase.productdetails.ProductDetailsUseCaseImp
 import com.catchdesign.productdetails.composables.ProductDetailsTopBar
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class ProductDetails(val id: Int)
+
+fun NavController.toProductDetailsScreen(id: Int) {
+    navigate(ProductDetails(id = id))
+}
+
+fun NavGraphBuilder.productDetailsScreen(modifier: Modifier = Modifier, onBackPress: () -> Unit) {
+    composable<ProductDetails> {
+        ProductDetailsScreen(modifier = Modifier, onBackPress = onBackPress)
+    }
+}
 
 @Composable
-fun ProductDetailsScreen(
-    modifier: Modifier = Modifier, productDetailsViewModel: ProductDetailsViewModel
+internal fun ProductDetailsScreen(
+    modifier: Modifier = Modifier,
+    productDetailsViewModel: ProductDetailsViewModel = viewModel {
+        ProductDetailsViewModel(productDetailsUseCase = ProductDetailsUseCaseImp())
+    },
+    onBackPress: () -> Unit
 ) {
 
     val uiState by productDetailsViewModel.uiState.collectAsStateWithLifecycle()
@@ -42,16 +63,17 @@ fun ProductDetailsScreen(
             (uiState.productDetailsAPIState as? APIState.Success)?.data?.name ?: ""
         }
     }
+
     Scaffold(
         modifier = modifier, topBar = {
             ProductDetailsTopBar(
-                modifier = Modifier, name = name
+                modifier = Modifier, name = name,
+                onBackPress = onBackPress
             )
         }) { paddingValues ->
         val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
-                .consumeWindowInsets(paddingValues)
                 .padding(paddingValues)
                 .fillMaxSize()
                 .background(Color.White)
@@ -80,7 +102,10 @@ fun ProductDetailsScreen(
 }
 
 @Composable
-fun ProductDetailsContent(modifier: Modifier = Modifier, productDetailsUI: ProductDetailsUI) {
+internal fun ProductDetailsContent(
+    modifier: Modifier = Modifier,
+    productDetailsUI: ProductDetailsUI
+) {
     Text(
         modifier = modifier.padding(16.dp),
         text = productDetailsUI.description,
@@ -93,39 +118,45 @@ fun ProductDetailsContent(modifier: Modifier = Modifier, productDetailsUI: Produ
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
-    ProductDetailsScreen(modifier = Modifier, productDetailsViewModel = viewModel {
-        ProductDetailsViewModel(productDetailsUseCase = object : ProductDetailsUseCase {
-            override suspend fun invoke(): Flow<APIState<ProductDetailsUI>> {
-                return flow {
-                    val text =
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim t. Duis aute irure dolor in reprehenderit in v "
-                    emit(
-                        APIState.Success(
-                            ProductDetailsUI(
-                                id = 1,
-                                name = "Lorem Ipsum",
-                                description = (1..7).joinToString("\n") { text },
+    ProductDetailsScreen(
+        modifier = Modifier,
+        onBackPress = {},
+        productDetailsViewModel = viewModel {
+            ProductDetailsViewModel(productDetailsUseCase = object : ProductDetailsUseCase {
+                override suspend fun invoke(): Flow<APIState<ProductDetailsUI>> {
+                    return flow {
+                        val text =
+                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim t. Duis aute irure dolor in reprehenderit in v "
+                        emit(
+                            APIState.Success(
+                                ProductDetailsUI(
+                                    id = 1,
+                                    name = "Lorem Ipsum",
+                                    description = (1..7).joinToString("\n") { text },
+                                )
                             )
                         )
-                    )
+                    }
                 }
-            }
+            })
         })
-    })
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun PreviewLoading() {
-    ProductDetailsScreen(modifier = Modifier, productDetailsViewModel = viewModel {
-        ProductDetailsViewModel(productDetailsUseCase = object : ProductDetailsUseCase {
-            override suspend fun invoke(): Flow<APIState<ProductDetailsUI>> {
-                return flow {
-                    emit(
-                        APIState.Loading
-                    )
+    ProductDetailsScreen(
+        modifier = Modifier,
+        onBackPress = {},
+        productDetailsViewModel = viewModel {
+            ProductDetailsViewModel(productDetailsUseCase = object : ProductDetailsUseCase {
+                override suspend fun invoke(): Flow<APIState<ProductDetailsUI>> {
+                    return flow {
+                        emit(
+                            APIState.Loading
+                        )
+                    }
                 }
-            }
+            })
         })
-    })
 }

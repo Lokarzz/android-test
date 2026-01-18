@@ -1,6 +1,6 @@
 package com.catchdesign.productdetails.composables
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -9,6 +9,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,19 +23,28 @@ import com.catchdesign.productdetails.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ProductDetailsTopBar(modifier: Modifier = Modifier, name: String) {
+internal fun ProductDetailsTopBar(
+    modifier: Modifier = Modifier,
+    name: String,
+    onBackPress: () -> Unit
+) {
 
     CenterAlignedTopAppBar(
-        modifier = modifier.background(Color(0xFFF7F8FF)),
+        modifier = modifier,
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFFF7F8FF)),
         title = {
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 text = name, fontSize = 18.sp, maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                color = Color.Black
             )
         },
         navigationIcon = {
-            Row(modifier = Modifier, verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier.clickable(onClick = onBackPress),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Icon(
                     modifier = Modifier,
                     imageVector = Icons.AutoMirrored.Default.KeyboardArrowLeft,
@@ -56,7 +66,7 @@ internal fun ProductDetailsTopBar(modifier: Modifier = Modifier, name: String) {
 @Composable
 private fun Preview() {
     ProductDetailsTopBar(
-        modifier = Modifier,
-        name = "Lorem Ipsum"
+        name = "Lorem Ipsum",
+        onBackPress = {}
     )
 }

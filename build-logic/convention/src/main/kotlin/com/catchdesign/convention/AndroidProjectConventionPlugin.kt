@@ -60,6 +60,7 @@ class AndroidProjectConventionPlugin : Plugin<Project> {
         alias(plugin = libs.plugins.android.application)
         alias(plugin = libs.plugins.kotlin.android)
         alias(libs.plugins.kotlin.compose)
+//        alias(libs.plugins.kotlin.serialization)
     }
 
     private fun DependencyHandlerScope.applyDependencies(libs: LibrariesForLibs) {
@@ -78,11 +79,11 @@ class AndroidProjectConventionPlugin : Plugin<Project> {
         debugImplementation(libs.androidx.compose.ui.test.manifest)
 
         implementation(libs.kotlinx.coroutines.android)
+        implementation(libs.androidx.navigation.compose)
 
         testImplementation(libs.junit)
         androidTestImplementation(libs.androidx.junit)
         androidTestImplementation(libs.androidx.espresso.core)
-
 
 
     }
