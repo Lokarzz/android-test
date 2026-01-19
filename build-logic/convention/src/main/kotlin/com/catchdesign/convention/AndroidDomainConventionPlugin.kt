@@ -3,7 +3,6 @@ package com.catchdesign.convention
 
 import com.android.build.gradle.LibraryExtension
 import com.catchdesign.convention.extensions.alias
-import com.catchdesign.convention.extensions.androidTestImplementation
 import com.catchdesign.convention.extensions.applyCompileOptions
 import com.catchdesign.convention.extensions.applyDefaultConfiguration
 import com.catchdesign.convention.extensions.applyKotlinJvmCompilerOptions
@@ -47,13 +46,8 @@ class AndroidDomainConventionPlugin : Plugin<Project> {
     }
 
     private fun DependencyHandlerScope.applyDependencies(libs: LibrariesForLibs) {
-        implementation(libs.androidx.core.ktx)
-        implementation(libs.androidx.appcompat)
-        implementation(libs.material)
         implementation(libs.kotlinx.coroutines.android)
         testImplementation(libs.junit)
-        androidTestImplementation(libs.androidx.junit)
-        androidTestImplementation(libs.androidx.espresso.core)
     }
     private fun Project.android(block: LibraryExtension.() -> Unit) {
         libraryExtension().apply(block)

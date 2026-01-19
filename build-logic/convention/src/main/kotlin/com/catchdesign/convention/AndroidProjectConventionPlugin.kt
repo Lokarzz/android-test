@@ -60,7 +60,6 @@ class AndroidProjectConventionPlugin : Plugin<Project> {
         alias(plugin = libs.plugins.android.application)
         alias(plugin = libs.plugins.kotlin.android)
         alias(libs.plugins.kotlin.compose)
-//        alias(libs.plugins.kotlin.serialization)
     }
 
     private fun DependencyHandlerScope.applyDependencies(libs: LibrariesForLibs) {

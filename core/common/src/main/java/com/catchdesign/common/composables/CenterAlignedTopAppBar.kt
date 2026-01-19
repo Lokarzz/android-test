@@ -1,11 +1,10 @@
-package com.catchdesign.productdetails.composables
+package com.catchdesign.common.composables
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -19,19 +18,21 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.catchdesign.productdetails.R
+import com.catchdesign.common.R
+import com.catchdesign.common.color.GhostWhite
+import androidx.compose.material3.CenterAlignedTopAppBar as MaterialCenterAlignedTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ProductDetailsTopBar(
+fun CenterAlignedTopAppBar(
     modifier: Modifier = Modifier,
     name: String,
     onBackPress: () -> Unit
 ) {
 
-    CenterAlignedTopAppBar(
+    MaterialCenterAlignedTopAppBar(
         modifier = modifier,
-        colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFFF7F8FF)),
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = GhostWhite),
         title = {
             Text(
                 modifier = Modifier.padding(horizontal = 16.dp),
@@ -61,11 +62,10 @@ internal fun ProductDetailsTopBar(
     )
 }
 
-
 @Preview(showBackground = true)
 @Composable
 private fun Preview() {
-    ProductDetailsTopBar(
+    CenterAlignedTopAppBar(
         name = "Lorem Ipsum",
         onBackPress = {}
     )

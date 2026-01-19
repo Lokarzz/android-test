@@ -1,4 +1,4 @@
-package com.catchdesign.core
+package com.catchdesign.common
 
 import org.junit.Test
 

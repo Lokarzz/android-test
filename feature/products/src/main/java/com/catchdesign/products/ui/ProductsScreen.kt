@@ -1,6 +1,7 @@
 package com.catchdesign.products.ui
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,17 +11,16 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.catchdesign.common.composables.BackgroundScreen
 import com.catchdesign.domain.model.APIState
 import com.catchdesign.domain.model.products.ProductsUI
 import com.catchdesign.domain.usecase.products.ProductsUseCaseImp
@@ -57,18 +57,21 @@ internal fun ProductsScreen(
             onRefresh = {
                 productsViewModel.handleAction(action = ProductsAction.OnRefresh)
             },
-            indicator = {
-                Indicator(
-                    modifier = Modifier
-                        .align(Alignment.TopCenter),
-                    isRefreshing = uiState.isRefreshing,
-                    state = state
-                )
-            },
-            state = state
+            state = state,
         ) {
-            LazyColumn(modifier = Modifier.fillMaxSize(), contentPadding = it) {
-                productsAPIState(uiState.projectsAPIState, onItemPress = onItemPress)
+            Box(modifier = Modifier) {
+                BackgroundScreen(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    show = uiState.projectsAPIState !is APIState.Success
+                )
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentPadding = it
+                ) {
+                    productsAPIState(uiState.projectsAPIState, onItemPress = onItemPress)
+                }
             }
         }
     }

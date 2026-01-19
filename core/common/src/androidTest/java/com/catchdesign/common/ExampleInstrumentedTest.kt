@@ -1,4 +1,4 @@
-package com.catchdesign.core
+package com.catchdesign.common
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.catchdesign.core.test", appContext.packageName)
+        assertEquals("com.catchdesign.common.test", appContext.packageName)
     }
 }

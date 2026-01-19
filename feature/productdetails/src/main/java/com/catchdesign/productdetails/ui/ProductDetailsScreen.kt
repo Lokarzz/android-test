@@ -1,6 +1,5 @@
 package com.catchdesign.productdetails.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -17,7 +16,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,11 +24,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.catchdesign.common.composables.CenterAlignedTopAppBar
 import com.catchdesign.domain.model.APIState
 import com.catchdesign.domain.model.productdetails.ProductDetailsUI
 import com.catchdesign.domain.usecase.productdetails.ProductDetailsUseCase
 import com.catchdesign.domain.usecase.productdetails.ProductDetailsUseCaseImp
-import com.catchdesign.productdetails.composables.ProductDetailsTopBar
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.Serializable
@@ -66,8 +64,9 @@ internal fun ProductDetailsScreen(
 
     Scaffold(
         modifier = modifier, topBar = {
-            ProductDetailsTopBar(
-                modifier = Modifier, name = name,
+            CenterAlignedTopAppBar(
+                modifier = Modifier,
+                name = name,
                 onBackPress = onBackPress
             )
         }) { paddingValues ->
@@ -76,7 +75,6 @@ internal fun ProductDetailsScreen(
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize()
-                .background(Color.White)
                 .verticalScroll(scrollState)
         ) {
             when (val apiState = uiState.productDetailsAPIState) {
@@ -109,7 +107,6 @@ internal fun ProductDetailsContent(
     Text(
         modifier = modifier.padding(16.dp),
         text = productDetailsUI.description,
-        color = Color.Black,
         style = MaterialTheme.typography.bodyMedium,
         fontSize = 18.sp,
     )

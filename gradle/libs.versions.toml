@@ -59,3 +59,4 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 catchdesign-convention-android-application = { id = "com.catchdesign.convention.android.application" }
 catchdesign-convention-android-feature = { id = "com.catchdesign.convention.android.feature" }
 catchdesign-convention-android-domain = { id = "com.catchdesign.convention.android.domain" }
+catchdesign-convention-android-common = { id = "com.catchdesign.convention.android.common" }

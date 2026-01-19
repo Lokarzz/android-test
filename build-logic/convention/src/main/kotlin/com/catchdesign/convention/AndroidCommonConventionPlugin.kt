@@ -18,7 +18,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.gradle.kotlin.dsl.dependencies
 
-class AndroidFeatureConventionPlugin : Plugin<Project> {
+class AndroidCommonConventionPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         with(project) {
             val libs = libs()
@@ -45,7 +45,6 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         alias(libs.plugins.android.library)
         alias(libs.plugins.kotlin.android)
         alias(libs.plugins.kotlin.compose)
-        alias(libs.plugins.kotlin.serialization)
     }
 
     private fun DependencyHandlerScope.applyDependencies(libs: LibrariesForLibs) {
@@ -58,15 +57,9 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         implementation(libs.androidx.compose.material3)
         implementation(libs.kotlinx.coroutines.android)
 
-        implementation(libs.androidx.lifecycle.runtime.ktx)
-        implementation(libs.androidx.lifecycle.viewmodel.compose)
-        implementation(libs.androidx.lifecycle.viewmodel.ktx)
-        implementation(libs.androidx.navigation.compose)
-
 
         debugImplementation(libs.androidx.compose.ui.tooling)
         debugImplementation(libs.androidx.compose.ui.test.manifest)
-
         testImplementation(libs.junit)
         testImplementation(libs.kotlinx.coroutines.test)
 
