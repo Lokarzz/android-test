@@ -11,15 +11,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -29,8 +32,10 @@ import com.catchdesign.common.composables.CenterAlignedTopAppBar
 import com.catchdesign.domain.model.APIState
 import com.catchdesign.domain.model.productdetails.ProductDetailsUI
 import com.catchdesign.domain.usecase.productdetails.ProductDetailsUseCase
+import com.catchdesign.util.context.showToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.Serializable
 
@@ -60,13 +65,11 @@ internal fun ProductDetailsScreen(
             (uiState.productDetailsAPIState as? APIState.Success)?.data?.name ?: ""
         }
     }
-
+    ProductDetailsLaunchEffect(sharedFlow = productDetailsViewModel.effects)
     Scaffold(
         modifier = modifier, topBar = {
             CenterAlignedTopAppBar(
-                modifier = Modifier,
-                name = name,
-                onBackPress = onBackPress
+                modifier = Modifier, name = name, onBackPress = onBackPress
             )
         }) { paddingValues ->
         val scrollState = rememberScrollState()
@@ -99,9 +102,20 @@ internal fun ProductDetailsScreen(
 }
 
 @Composable
+internal fun ProductDetailsLaunchEffect(sharedFlow: SharedFlow<ProductDetailsEffect>) {
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        sharedFlow.collect {
+            when (it) {
+                is ProductDetailsEffect.OnError -> context.showToast(it.message)
+            }
+        }
+    }
+}
+
+@Composable
 internal fun ProductDetailsContent(
-    modifier: Modifier = Modifier,
-    productDetailsUI: ProductDetailsUI
+    modifier: Modifier = Modifier, productDetailsUI: ProductDetailsUI
 ) {
     Text(
         modifier = modifier.padding(16.dp),
@@ -118,23 +132,25 @@ private fun Preview() {
         modifier = Modifier,
         onBackPress = {},
         productDetailsViewModel = viewModel {
-            ProductDetailsViewModel(productDetailsUseCase = object : ProductDetailsUseCase {
-                override suspend fun invoke(): Flow<APIState<ProductDetailsUI>> {
-                    return flow {
-                        val text =
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim t. Duis aute irure dolor in reprehenderit in v "
-                        emit(
-                            APIState.Success(
-                                ProductDetailsUI(
-                                    id = 1,
-                                    name = "Lorem Ipsum",
-                                    description = (1..7).joinToString("\n") { text },
+            ProductDetailsViewModel(
+                productDetailsUseCase = object : ProductDetailsUseCase {
+                    override suspend fun invoke(id: Int): Flow<APIState<ProductDetailsUI>> {
+                        return flow {
+                            val text =
+                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim t. Duis aute irure dolor in reprehenderit in v "
+                            emit(
+                                APIState.Success(
+                                    ProductDetailsUI(
+                                        id = 1,
+                                        name = "Lorem Ipsum",
+                                        description = (1..7).joinToString("\n") { text },
+                                    )
                                 )
                             )
-                        )
+                        }
                     }
-                }
-            }, coroutineDispatcher = Dispatchers.Default)
+                }, coroutineDispatcher = Dispatchers.Default, savedStateHandle = SavedStateHandle()
+            )
         })
 }
 
@@ -146,13 +162,13 @@ private fun PreviewLoading() {
         onBackPress = {},
         productDetailsViewModel = viewModel {
             ProductDetailsViewModel(productDetailsUseCase = object : ProductDetailsUseCase {
-                override suspend fun invoke(): Flow<APIState<ProductDetailsUI>> {
+                override suspend fun invoke(id: Int): Flow<APIState<ProductDetailsUI>> {
                     return flow {
                         emit(
                             APIState.Loading
                         )
                     }
                 }
-            }, coroutineDispatcher = Dispatchers.Default)
+            }, coroutineDispatcher = Dispatchers.Default, savedStateHandle = SavedStateHandle())
         })
 }

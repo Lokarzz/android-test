@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface ProductDetailsUseCase {
 
-    suspend operator fun invoke(): Flow<APIState<ProductDetailsUI>>
+    suspend operator fun invoke(id : Int): Flow<APIState<ProductDetailsUI>>
 
 }

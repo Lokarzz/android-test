@@ -1,6 +1,6 @@
 package com.catchdesign.domain.model.productdetails
 
-import com.catchdesign.data.model.remote.product.list.ProductsResponse
+import com.catchdesign.data.model.remote.product.detail.ProductDetails
 
 
 data class ProductDetailsUI(
@@ -8,5 +8,13 @@ data class ProductDetailsUI(
     val name: String,
     val description: String
 )
+
+fun ProductDetails.toUI(): ProductDetailsUI {
+    return ProductDetailsUI(
+        id = id,
+        name = title,
+        description = content
+    )
+}
 
 
