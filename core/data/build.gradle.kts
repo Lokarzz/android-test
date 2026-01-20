@@ -17,12 +17,6 @@ android {
             "\"https://raw.githubusercontent.com\""
         )
     }
-
-    buildTypes {
-        release {
-
-        }
-    }
 }
 
 dependencies {

@@ -16,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 internal object NetworkModule {
     @Provides
     fun provideRetrofit(): Retrofit {
-        return Retrofit.Builder().baseUrl( BuildConfig.BASE_URL)
+        return Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create()).build()
     }
 
