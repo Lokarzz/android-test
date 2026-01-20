@@ -19,15 +19,34 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: gradle
+    - name: Decode keystore
+      run: |
+        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > release.keystore
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Unit test
       run: ./gradlew test
-    - name: Build with Gradle
-      run: ./gradlew build
-    - name: Upload main APK to Github Artifacts
+    - name: Build apk and aab
+      env:
+        KEYSTORE_PATH: release.keystore
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      run: ./gradlew assembleRelease bundleRelease assembleDebug
+    - name: Upload release bundle to Github Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: Android Test
+        name: app-release.aab
+        path: app/build/outputs/bundle/release/app-release.aab
+    - name: Upload debug APK to Github Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-debug.apk
         path: app/build/outputs/apk/debug/app-debug.apk
+    - name: Upload release APK to Github Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-release.apk
+        path: app/build/outputs/apk/release/app-release.apk
+
