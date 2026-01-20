@@ -40,6 +40,7 @@ class ProductsViewModelTest {
     @Test
     fun `uiState initial value is correct`() = runTest {
         val state = viewModel.uiState.value
+        assertEquals(true, state.showBackground)
         assertEquals(false, state.isRefreshing)
         assertTrue(state.projectsAPIState is APIState.Idle)
     }
@@ -48,11 +49,12 @@ class ProductsViewModelTest {
     fun `handleAction OnRefresh and fetchProducts successfully`() =
         runTest {
             viewModel.handleAction(ProductsAction.OnRefresh)
-
+            assertEquals(true, viewModel.uiState.value.showBackground)
             assertEquals(true, viewModel.uiState.value.isRefreshing)
             testScheduler.advanceUntilIdle()
 
             assertEquals(false, viewModel.uiState.value.isRefreshing)
+            assertEquals(false, viewModel.uiState.value.showBackground)
             assertTrue(viewModel.uiState.value.projectsAPIState is APIState.Success)
         }
 
@@ -63,6 +65,7 @@ class ProductsViewModelTest {
             coroutineDispatcher = testDispatcher
         )
         assertTrue(viewModel.uiState.value.projectsAPIState is APIState.Idle)
+        assertEquals(true, viewModel.uiState.value.showBackground)
         assertEquals(false, viewModel.uiState.value.isRefreshing)
 
         viewModel.handleAction(ProductsAction.OnRefresh)
@@ -70,6 +73,7 @@ class ProductsViewModelTest {
         assertEquals(true, viewModel.uiState.value.isRefreshing)
         testScheduler.advanceUntilIdle()
         assertEquals(false, viewModel.uiState.value.isRefreshing)
+        assertEquals(true, viewModel.uiState.value.showBackground)
         assertTrue(viewModel.uiState.value.projectsAPIState is APIState.Error)
 
     }

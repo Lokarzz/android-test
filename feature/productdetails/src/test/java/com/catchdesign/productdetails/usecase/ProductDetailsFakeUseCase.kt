@@ -8,12 +8,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 internal class ProductDetailsFakeUseCase : ProductDetailsUseCase {
-    override suspend fun invoke(): Flow<APIState<ProductDetailsUI>> {
+    override suspend fun invoke(id: Int): Flow<APIState<ProductDetailsUI>> {
         return flow {
             emit(
                 APIState.Success(
                     ProductDetailsUI(
-                        id = 1,
+                        id = id,
                         name = "Product 1",
                         description = "Description 1"
                     )
@@ -24,7 +24,7 @@ internal class ProductDetailsFakeUseCase : ProductDetailsUseCase {
 }
 
 internal class ProductDetailsFakeUseCaseError : ProductDetailsUseCase {
-    override suspend fun invoke(): Flow<APIState<ProductDetailsUI>> {
+    override suspend fun invoke(id: Int): Flow<APIState<ProductDetailsUI>> {
         return flow {
             emit(
                 APIState.Error(

@@ -1,6 +1,7 @@
 package com.catchdesign.data.di.network
 
 
+import com.catchdesign.data.BuildConfig
 import com.catchdesign.data.repository.remote.APIService
 import dagger.Module
 import dagger.Provides
@@ -15,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 internal object NetworkModule {
     @Provides
     fun provideRetrofit(): Retrofit {
-        return Retrofit.Builder().baseUrl("https://raw.githubusercontent.com")
+        return Retrofit.Builder().baseUrl( BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create()).build()
     }
 
