@@ -1,3 +1,29 @@
+# Android Test
+
+## Test link (debug/release apk, release bundle)
+https://github.com/Lokarzz/android-test/actions/runs/21186864744
+
+## Run the app
+- Open Android Studio
+- Clone the repository
+- Run -> Run 'app'
+
+## Language
+- kotlin
+
+## Architecture
+- MVI (Model-View-Intent)
+- Modularization 
+
+## Tools
+- Jetpack compose
+- Jetpack Viewmodel
+- Jetpack navigation 2
+- Hilt
+- Retrofit2
+
+---
+
 # Android Developer Test
 
 A simple test for Android Developers
