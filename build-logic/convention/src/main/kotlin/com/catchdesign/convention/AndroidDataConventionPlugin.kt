@@ -50,6 +50,7 @@ class AndroidDataConventionPlugin : Plugin<Project> {
         implementation(libs.kotlinx.coroutines.android)
         testImplementation(libs.junit)
     }
+
     private fun Project.android(block: LibraryExtension.() -> Unit) {
         libraryExtension().apply(block)
     }

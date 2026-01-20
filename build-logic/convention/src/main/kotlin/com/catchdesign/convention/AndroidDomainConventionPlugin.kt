@@ -49,6 +49,8 @@ class AndroidDomainConventionPlugin : Plugin<Project> {
     private fun DependencyHandlerScope.applyDependencies(libs: LibrariesForLibs) {
         implementation(libs.kotlinx.coroutines.android)
         testImplementation(libs.junit)
+        testImplementation(libs.kotlinx.coroutines.test)
+
     }
     private fun Project.android(block: LibraryExtension.() -> Unit) {
         libraryExtension().apply(block)
