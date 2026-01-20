@@ -21,15 +21,14 @@ jobs:
         cache: gradle
     - name: Decode keystore
       run: |
-        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > release.keystore
-
+        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/release.jks
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Unit test
       run: ./gradlew test
     - name: Build apk and aab
       env:
-        KEYSTORE_PATH: release.keystore
+        KEYSTORE_PATH: release.jks
         KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
