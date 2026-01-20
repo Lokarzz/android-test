@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -28,7 +29,7 @@ import com.catchdesign.common.composables.CenterAlignedTopAppBar
 import com.catchdesign.domain.model.APIState
 import com.catchdesign.domain.model.productdetails.ProductDetailsUI
 import com.catchdesign.domain.usecase.productdetails.ProductDetailsUseCase
-import com.catchdesign.domain.usecase.productdetails.ProductDetailsUseCaseImp
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.Serializable
@@ -42,16 +43,14 @@ fun NavController.toProductDetailsScreen(id: Int) {
 
 fun NavGraphBuilder.productDetailsScreen(modifier: Modifier = Modifier, onBackPress: () -> Unit) {
     composable<ProductDetails> {
-        ProductDetailsScreen(modifier = Modifier, onBackPress = onBackPress)
+        ProductDetailsScreen(modifier = modifier, onBackPress = onBackPress)
     }
 }
 
 @Composable
 internal fun ProductDetailsScreen(
     modifier: Modifier = Modifier,
-    productDetailsViewModel: ProductDetailsViewModel = viewModel {
-        ProductDetailsViewModel(productDetailsUseCase = ProductDetailsUseCaseImp())
-    },
+    productDetailsViewModel: ProductDetailsViewModel = hiltViewModel(),
     onBackPress: () -> Unit
 ) {
 
@@ -135,7 +134,7 @@ private fun Preview() {
                         )
                     }
                 }
-            })
+            }, coroutineDispatcher = Dispatchers.Default)
         })
 }
 
@@ -154,6 +153,6 @@ private fun PreviewLoading() {
                         )
                     }
                 }
-            })
+            }, coroutineDispatcher = Dispatchers.Default)
         })
 }

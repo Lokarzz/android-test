@@ -1,11 +1,15 @@
 package com.catchdesign.domain.usecase.productdetails
 
+import com.catchdesign.data.repository.remote.products.ProductsRepository
 import com.catchdesign.domain.model.APIState
 import com.catchdesign.domain.model.productdetails.ProductDetailsUI
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
-class ProductDetailsUseCaseImp : ProductDetailsUseCase {
+
+internal class ProductDetailsUseCaseImp @Inject constructor(private val productsRepository: ProductsRepository) :
+    ProductDetailsUseCase {
     override suspend fun invoke(): Flow<APIState<ProductDetailsUI>> {
         return flow {
             emit(

@@ -43,6 +43,7 @@ class AndroidDomainConventionPlugin : Plugin<Project> {
     private fun Project.applyPlugins(libs: LibrariesForLibs) {
         alias(libs.plugins.android.library)
         alias(libs.plugins.kotlin.android)
+        alias(libs.plugins.catchdesign.convention.android.hilt)
     }
 
     private fun DependencyHandlerScope.applyDependencies(libs: LibrariesForLibs) {

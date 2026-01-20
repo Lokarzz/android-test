@@ -60,6 +60,7 @@ class AndroidProjectConventionPlugin : Plugin<Project> {
         alias(plugin = libs.plugins.android.application)
         alias(plugin = libs.plugins.kotlin.android)
         alias(libs.plugins.kotlin.compose)
+        alias(libs.plugins.catchdesign.convention.android.hilt)
     }
 
     private fun DependencyHandlerScope.applyDependencies(libs: LibrariesForLibs) {
@@ -72,6 +73,7 @@ class AndroidProjectConventionPlugin : Plugin<Project> {
         implementation(libs.androidx.compose.ui.graphics)
         implementation(libs.androidx.compose.ui.tooling.preview)
         implementation(libs.androidx.compose.material3)
+        
         androidTestImplementation(platform(libs.androidx.compose.bom))
         androidTestImplementation(libs.androidx.compose.ui.test.junit4)
         debugImplementation(libs.androidx.compose.ui.tooling)

@@ -6,7 +6,8 @@ import com.catchdesign.domain.model.products.ProductsUI
 
 data class ProductsUIState(
     val projectsAPIState: APIState<ProductsUI> = APIState.Idle,
-    val isRefreshing: Boolean = false
+    val isRefreshing: Boolean = false,
+    val showBackground: Boolean = true,
 )
 
 

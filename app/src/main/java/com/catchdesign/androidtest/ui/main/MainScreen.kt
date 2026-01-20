@@ -14,7 +14,6 @@ import com.catchdesign.products.ui.productsScreen
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
-
     NavHost(
         modifier = modifier,
         navController = navController,

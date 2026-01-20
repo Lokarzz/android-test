@@ -46,6 +46,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         alias(libs.plugins.kotlin.android)
         alias(libs.plugins.kotlin.compose)
         alias(libs.plugins.kotlin.serialization)
+        alias(libs.plugins.catchdesign.convention.android.hilt)
     }
 
     private fun DependencyHandlerScope.applyDependencies(libs: LibrariesForLibs) {
@@ -62,7 +63,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
         implementation(libs.androidx.lifecycle.viewmodel.compose)
         implementation(libs.androidx.lifecycle.viewmodel.ktx)
         implementation(libs.androidx.navigation.compose)
-
+        implementation(libs.androidx.compose.material.icons.core)
 
         debugImplementation(libs.androidx.compose.ui.tooling)
         debugImplementation(libs.androidx.compose.ui.test.manifest)

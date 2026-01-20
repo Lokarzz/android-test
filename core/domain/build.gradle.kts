@@ -8,4 +8,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.data)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
 }

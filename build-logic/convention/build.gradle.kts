@@ -52,5 +52,13 @@ gradlePlugin {
             id = libs.plugins.catchdesign.convention.android.common.get().pluginId
             implementationClass = "com.catchdesign.convention.AndroidCommonConventionPlugin"
         }
+        create("androidData") {
+            id = libs.plugins.catchdesign.convention.android.data.get().pluginId
+            implementationClass = "com.catchdesign.convention.AndroidDataConventionPlugin"
+        }
+        create("androidHilt") {
+            id = libs.plugins.catchdesign.convention.android.hilt.get().pluginId
+            implementationClass = "com.catchdesign.convention.HiltConventionPlugin"
+        }
     }
 }

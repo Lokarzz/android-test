@@ -8,5 +8,4 @@ interface ProductDetailsUseCase {
 
     suspend operator fun invoke(): Flow<APIState<ProductDetailsUI>>
 
-
 }

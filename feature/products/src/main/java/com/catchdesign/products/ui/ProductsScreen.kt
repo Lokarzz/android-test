@@ -13,18 +13,27 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.catchdesign.common.composables.BackgroundScreen
 import com.catchdesign.domain.model.APIState
+import com.catchdesign.domain.model.products.ProductUI
 import com.catchdesign.domain.model.products.ProductsUI
-import com.catchdesign.domain.usecase.products.ProductsUseCaseImp
+import com.catchdesign.domain.usecase.products.ProductsUseCase
 import com.catchdesign.products.composables.ProductItem
+import com.catchdesign.util.context.showToast
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -43,13 +52,14 @@ fun NavGraphBuilder.productsScreen(
 @Composable
 internal fun ProductsScreen(
     modifier: Modifier = Modifier,
-    productsViewModel: ProductsViewModel = viewModel { ProductsViewModel(productsUseCase = ProductsUseCaseImp()) },
+    productsViewModel: ProductsViewModel = hiltViewModel(),
     onItemPress: (Int) -> Unit
 ) {
 
     val uiState by productsViewModel.uiState.collectAsStateWithLifecycle()
     val state = rememberPullToRefreshState()
 
+    ProductsLaunchEffect(sharedFlow = productsViewModel.effects)
     Scaffold(modifier = modifier) {
         PullToRefreshBox(
             modifier = Modifier,
@@ -63,7 +73,7 @@ internal fun ProductsScreen(
                 BackgroundScreen(
                     modifier = Modifier
                         .fillMaxSize(),
-                    show = uiState.projectsAPIState !is APIState.Success
+                    show = uiState.showBackground
                 )
                 LazyColumn(
                     modifier = Modifier
@@ -75,7 +85,21 @@ internal fun ProductsScreen(
             }
         }
     }
+}
 
+@Composable
+fun ProductsLaunchEffect(sharedFlow: SharedFlow<ProductsEffect>) {
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        sharedFlow.collect { productsEffect ->
+            when (productsEffect) {
+                is ProductsEffect.OnError -> {
+                    context.showToast(message = productsEffect.message)
+                }
+            }
+        }
+    }
 }
 
 private fun LazyListScope.productsAPIState(
@@ -104,7 +128,20 @@ private fun LazyListScope.productsAPIState(
 @Composable
 private fun ScreenPreview() {
     val productsViewModel = viewModel {
-        ProductsViewModel(productsUseCase = ProductsUseCaseImp())
+        ProductsViewModel(productsUseCase = object : ProductsUseCase {
+            override suspend fun invoke(): Flow<APIState<ProductsUI>> {
+                return flow {
+                    emit(APIState.Success((1..20).map {
+                        ProductUI(
+                            id = it,
+                            name = "Name $it",
+                            tagLine = "Tagline $it"
+                        )
+                    }))
+                }
+            }
+
+        }, coroutineDispatcher = Dispatchers.Default)
     }
     productsViewModel.handleAction(action = ProductsAction.OnRefresh)
     MaterialTheme {

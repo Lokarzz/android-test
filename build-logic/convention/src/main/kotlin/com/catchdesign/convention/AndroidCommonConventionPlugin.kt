@@ -45,6 +45,7 @@ class AndroidCommonConventionPlugin : Plugin<Project> {
         alias(libs.plugins.android.library)
         alias(libs.plugins.kotlin.android)
         alias(libs.plugins.kotlin.compose)
+        alias(libs.plugins.catchdesign.convention.android.hilt)
     }
 
     private fun DependencyHandlerScope.applyDependencies(libs: LibrariesForLibs) {
@@ -55,6 +56,7 @@ class AndroidCommonConventionPlugin : Plugin<Project> {
         implementation(libs.androidx.compose.ui.graphics)
         implementation(libs.androidx.compose.ui.tooling.preview)
         implementation(libs.androidx.compose.material3)
+        implementation(libs.androidx.compose.material.icons.core)
         implementation(libs.kotlinx.coroutines.android)
 
 
